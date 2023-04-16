@@ -1,0 +1,10 @@
+{
+    "window_color": "#1a1a1a",
+    "frame_color": "#212121",
+    "button_color_muted": "#14375e",
+    "button_color": "#1f538d",
+    "button_color_highlighted": "#2f6ec7",
+    "text_color": "#FFFFFF",
+    "always_on_top": "False",
+    "always_on_top_text": "Always on top is: OFF"
+}
