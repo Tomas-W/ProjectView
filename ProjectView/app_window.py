@@ -429,10 +429,6 @@ class AppWindow(ctk.CTk):
             messagebox.showwarning(title="Warning",
                                    message=NEW_NAME_NOT_ACCEPTED_TEXT)
 
-        # Update user widget name list
-        # noinspection PyUnboundLocalVariable
-        self.user_widget_names.append(new_button_name)
-
         # Check what frame the user wants to add the action button to
         if frame_index == 1:
             # Prompt user for a file location
@@ -440,10 +436,10 @@ class AppWindow(ctk.CTk):
                                                     initialdir="/",
                                                     filetypes=(("all files", "*.*"),
                                                                ("Text files", "*.txt*")))
-            frame = self.frames[1]
-            widget_list = self.application_widgets
             if new_target == "":
                 return None
+            frame = self.frames[1]
+            widget_list = self.application_widgets
 
         elif frame_index == 2:
             # Prompt user for a folder location
@@ -551,18 +547,19 @@ class AppWindow(ctk.CTk):
         # Update user widget name list
         self.user_widget_names.append(new_button_name)
 
-    @staticmethod
-    def destroy_user_widgets(button_name, widget_list):
+    def destroy_user_widgets(self, button_name, widget_list):
         """
         Destroys user button that is passed on.
 
         :param button_name: Name of the button (str).
         :param widget_list: List of widgets the widget is in.
         """
+        self.user_widget_names.remove(button_name)
         for widget in reversed(widget_list):
             if widget[0] == button_name:
                 widget[2].destroy()
                 widget_list.remove(widget)
+
 
     @staticmethod
     def open_target(frame_index, button_name, location):
