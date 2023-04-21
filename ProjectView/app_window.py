@@ -560,6 +560,8 @@ class AppWindow(ctk.CTk):
                 widget[2].destroy()
                 widget_list.remove(widget)
 
+        self.save_project()
+        self.change_project(self.current_project_name)
 
     @staticmethod
     def open_target(frame_index, button_name, location):
