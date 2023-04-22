@@ -13,14 +13,13 @@ from ProjectView.extra_settings_window import SettingsView
 # Utilities
 from ProjectView.utilities.app_window_utils import is_name_accepted, get_fresh_project_settings, \
     save_current_project_settings, backup_current_project_settings, get_project_widgets_info, \
-    get_current_project_settings
+    get_current_project_settings, rename_project_settings
 # Variables
 from ProjectView.app_variables.messages import NEW_NAME_TEXT, NEW_NAME_NOT_ACCEPTED_TEXT, \
-    REMOVE_PROJECT_TEXT, NEW_WEBSITE_ADDRESS_TEXT, OPEN_TARGET_ERROR_TEXT, UNEXPECTED_ERROR_TEXT, \
-    INVALID_TARGET_TEXT
+    REMOVE_PROJECT_TEXT, NEW_WEBSITE_ADDRESS_TEXT, OPEN_TARGET_ERROR_TEXT, INVALID_TARGET_TEXT, \
+    RENAME_ERROR_TEXT, UNEXPECTED_RENAME_ERROR_TEXT
 from ProjectView.app_variables.settings import FRAME_COLOR, TEXT_COLOR, BUTTON_COLOR_MUTED, \
     BUTTON_COLOR_HIGHLIGHTED, WINDOW_COLOR, BUTTON_COLOR
-
 
 # Title bar color setting
 ctk.set_appearance_mode("Dark")
@@ -38,7 +37,7 @@ class AppWindow(ctk.CTk):
         super().__init__()
         # Window settings
         self.title("ProjectView")
-        self.geometry("-9-1")
+        self.geometry("-0-0")
         self.resizable(width=False,
                        height=False)
         self.toplevel_window = None
@@ -378,6 +377,20 @@ class AppWindow(ctk.CTk):
             messagebox.showwarning(title="Warning",
                                    message=NEW_NAME_NOT_ACCEPTED_TEXT)
 
+        # Rename settings file
+        try_rename = rename_project_settings(old_project_name=current_project_name,
+                                             new_project_name=new_project_name)
+        if try_rename == "access":
+            # User has no access
+            messagebox.showwarning(title="Warning",
+                                   message=RENAME_ERROR_TEXT)
+            return
+        elif try_rename == "unexpected":
+            # Unexpected error
+            messagebox.showwarning(title="Warning",
+                                   message=UNEXPECTED_RENAME_ERROR_TEXT)
+            return
+
         # Find project to rename and rename it
         for i, project in enumerate(self.project_names):
             if project == current_project_name:
@@ -386,17 +399,6 @@ class AppWindow(ctk.CTk):
 
         # Update options menu
         self.settings_widgets[-1].configure(values=self.project_names)
-
-        # Get profile settings
-        profile_settings = get_current_project_settings(
-            application_buttons=self.application_widgets,
-            directory_buttons=self.directory_widgets,
-            website_buttons=self.website_widgets
-        )
-
-        # Save new profile settings
-        save_current_project_settings(project_settings=profile_settings,
-                                      project_name=new_project_name)
 
         # Set new project to current project
         self.current_project_name = new_project_name
@@ -604,4 +606,4 @@ class AppWindow(ctk.CTk):
             # website cannot be opened, show error
             except webbrowser.Error:
                 messagebox.showerror(title="Error",
-                                     message=f"{UNEXPECTED_ERROR_TEXT} '{location}'")
+                                     message=f"{OPEN_TARGET_ERROR_TEXT} '{location}'")

@@ -6,7 +6,6 @@ import os
 import re
 import sys
 
-
 APPLICATION_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 PROJECTS_FOLDER = os.path.join(APPLICATION_DIR, "ProjectView\\projects")
 PROJECTS_BACKUP_FOLDER = os.path.join(APPLICATION_DIR, "ProjectView\\projects\\backups")
@@ -38,13 +37,13 @@ def get_fresh_project_settings():
     :return: Nested dictionary with widget containing empty lists.
     """
     return {
-            "application_names": [],
-            "application_targets": [],
-            "directory_names": [],
-            "directory_targets": [],
-            "website_names": [],
-            "website_targets": []
-        }
+        "application_names": [],
+        "application_targets": [],
+        "directory_names": [],
+        "directory_targets": [],
+        "website_names": [],
+        "website_targets": []
+    }
 
 
 def get_current_project_settings(application_buttons, directory_buttons,
@@ -62,13 +61,13 @@ def get_current_project_settings(application_buttons, directory_buttons,
     """
     # Buttons are added in pairs for easy delete, so must alternate here
     return {
-            "application_names": [x[0] for i, x in enumerate(application_buttons) if i % 2 == 0],
-            "application_targets": [x[1] for i, x in enumerate(application_buttons) if i % 2 == 0],
-            "directory_names": [x[0] for i, x in enumerate(directory_buttons) if i % 2 == 0],
-            "directory_targets": [x[1] for i, x in enumerate(directory_buttons) if i % 2 == 0],
-            "website_names": [x[0] for i, x in enumerate(website_buttons) if i % 2 == 0],
-            "website_targets": [x[1] for i, x in enumerate(website_buttons) if i % 2 == 0]
-        }
+        "application_names": [x[0] for i, x in enumerate(application_buttons) if i % 2 == 0],
+        "application_targets": [x[1] for i, x in enumerate(application_buttons) if i % 2 == 0],
+        "directory_names": [x[0] for i, x in enumerate(directory_buttons) if i % 2 == 0],
+        "directory_targets": [x[1] for i, x in enumerate(directory_buttons) if i % 2 == 0],
+        "website_names": [x[0] for i, x in enumerate(website_buttons) if i % 2 == 0],
+        "website_targets": [x[1] for i, x in enumerate(website_buttons) if i % 2 == 0]
+    }
 
 
 def get_project_widgets_info(project_name):
@@ -81,7 +80,8 @@ def get_project_widgets_info(project_name):
 
     :return: Names and targets of the users project widgets (str).
     """
-    with open(f"{PROJECTS_FOLDER}\\{project_name}.json", "r", encoding="utf-8") as active_project_setting:
+    with open(f"{PROJECTS_FOLDER}\\{project_name}.json", "r",
+              encoding="utf-8") as active_project_setting:
         project_data = json.load(active_project_setting)
         app_names = project_data["application_names"]
         app_targets = project_data["application_targets"]
@@ -90,8 +90,8 @@ def get_project_widgets_info(project_name):
         website_names = project_data["website_names"]
         website_targets = project_data["website_targets"]
 
-    return app_names, app_targets,\
-        directory_names, directory_targets,\
+    return app_names, app_targets, \
+        directory_names, directory_targets, \
         website_names, website_targets
 
 
@@ -129,6 +129,28 @@ def save_current_project_settings(project_settings, project_name):
     json_settings = json.dumps(project_settings, indent=4)
     with open(f"{PROJECTS_FOLDER}\\{project_name}.json", "w", encoding="utf-8") as save_file:
         save_file.write(json_settings)
+
+
+def rename_project_settings(old_project_name, new_project_name):
+    """
+    Gets an old project name and a new project name and
+        tries to rename the project settings file.
+    If file already exists or user has no rights,
+        an error is displayed thrown and displayed.
+    Called when rename_project() is called.
+
+    :param old_project_name: Old name of the project (str).
+    :param new_project_name: New name of the project (str).
+    """
+    try:
+        os.rename(f"{PROJECTS_FOLDER}\\{old_project_name}.json",
+                  f"{PROJECTS_FOLDER}\\{new_project_name}.json")
+        return True
+    except PermissionError:
+        # User has no rights or
+        return "access"
+    except:  # noqa
+        return "unexpected"
 
 
 def is_name_accepted(new_name, name_list):

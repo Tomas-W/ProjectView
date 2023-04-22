@@ -12,9 +12,9 @@ NEW_NAME_TEXT = "Provide a name" \
                 "  Min 3 characters\n" \
                 "   Max 20 characters"
 NEW_NAME_NOT_ACCEPTED_TEXT = "Name not accepted!\n\n" \
-                          "Either name is used already\n" \
-                          "or\n" \
-                          "Name did not meet requirements"
+                             "Either name is used already\n" \
+                             "or\n" \
+                             "Name did not meet requirements"
 REMOVE_PROJECT_TEXT = "Type 'stop' to cancel!\n" \
                       "Anything else will trigger delete\n" \
                       "You are about to delete project:\n\n"
@@ -32,7 +32,14 @@ OPEN_TARGET_ERROR_TEXT = "Unknown error!\n\n" \
                          "Do you have access rights?\n" \
                          "Has the file/folder been removed/renamed?\n\n" \
                          "Cannot open:\n\n"
-UNEXPECTED_ERROR_TEXT = "Unexpected error occurred!\n\n" \
-                        "Could not open:\n\n"
 INVALID_TARGET_TEXT = "Invalid target!\n" \
                       "Try again"
+
+RENAME_ERROR_TEXT = "Unexpected error occurred!\n" \
+                    "Cannot rename settings file.\n\n" \
+                    "User has no rights to rename the file\n" \
+                    "Try again and if problem persists,\n" \
+                    "choose a different name or reset the program"
+UNEXPECTED_RENAME_ERROR_TEXT = "Unexpected error occurred!\n\n" \
+                        "Try again or save profile folder and " \
+                        "reinstall if problem persists"
