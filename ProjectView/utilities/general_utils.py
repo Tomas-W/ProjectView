@@ -69,5 +69,5 @@ def restart_program():
 
     :return: New instance of the app.
     """
-    os.startfile("app.pyw")
+    os.startfile("ProjectView.pyw")
     sys.exit()

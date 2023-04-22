@@ -37,7 +37,8 @@ class AppWindow(ctk.CTk):
         super().__init__()
         # Window settings
         self.title("ProjectView")
-        self.geometry("-0-0")
+        # Placement if correct after auto py to exe
+        self.geometry("-3-1")
         self.resizable(width=False,
                        height=False)
         self.toplevel_window = None
